@@ -21,11 +21,19 @@ call vundle#begin()
 " see :h vundle for more details or wiki for FAQ
 
 Plugin 'VundleVim/Vundle.vim'
+
 Plugin 'flazz/vim-colorschemes'
+
 " Latex plugin
 Plugin 'lervag/vimtex.git'
+
 Plugin 'Shougo/neocomplete'
+
 Plugin 'scrooloose/nerdtree'
+
+" YouCompleteMe is a fast, as-you-type, fuzzy-search code completion engine
+Plugin 'Valloric/YouCompleteMe'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 " To ignore plugin indent changes, instead use:
@@ -50,6 +58,7 @@ set expandtab     " On pressing tab, insert <shiftwidth> spaces
 
 let g:tex_flavor = 'latex'  "Needed to load vimtex on startup on Macbook
 set number                  "Enable line numbering.
+set autoread                "Automatically refresh files that haven't been changed by VIM.
 
 set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
 
