@@ -61,6 +61,27 @@ colorscheme hybrid
 set background=dark
 set guifont=Menlo\ Regular:h15
 
+" tab navigation
+map tn :tabn<CR>
+map tp :tabp<CR>
+map tm :tabm 
+map tt :tabnew 
+map ts :tab split<CR>
+map <C-S-Right> :tabn<CR>
+imap <C-S-Right> <ESC>:tabn<CR>
+map <C-S-Left> :tabp<CR>
+imap <C-S-Left> <ESC>:tabp<CR>
+
+" navigate windows with meta+arrows
+map <M-Right> <c-w>l
+map <M-Left> <c-w>h
+map <M-Up> <c-w>k
+map <M-Down> <c-w>j
+imap <M-Right> <ESC><c-w>l
+imap <M-Left> <ESC><c-w>h
+imap <M-Up> <ESC><c-w>k
+imap <M-Down> <ESC><c-w>j
+
 "
 "Indentation
 "
@@ -68,14 +89,11 @@ set tabstop=2     "show exisiting tabs with 2 spaces width
 set shiftwidth=2  "when indenting, use 2 spaces width
 set expandtab     " On pressing tab, insert <shiftwidth> spaces
 
-let g:tex_flavor = 'latex'  "Needed to load vimtex on startup on Macbook
-set number                  "Enable line numbering.
-set autoread                "Automatically refresh files that haven't been changed by VIM.
 
 "set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
 
 "
-" Vimtex configuration
+" Latex configuration
 "
 " vimtex_view_* defines the used PDF viewer and enables forward search
 let g:vimtex_view_general_viewer = 'okular'
@@ -97,11 +115,21 @@ let g:ycm_semantic_triggers.tex = [
       \ 're!\\includestandalone(\s*\[[^]]*\])?\s*\{[^}]*',
       \ ]
 
+let g:tex_flavor = 'latex'  "Needed to load vimtex on startup on Macbook
+"Vim handles the following file types as latex files as well.
+augroup set_latex_filetypes
+    autocmd!
+    autocmd BufRead,BufNewFile *.pgf     set filetype=tex
+    autocmd BufRead,BufNewFile *.tikz    set filetype=tex
+    autocmd BufRead,BufNewFile *.pdf_tex set filetype=tex
+augroup END
 "
 " Usage with Python
 " 
 " Needs YouCompleteMe plugin, which is based on jedi, for autocompletion.
 let g:ycm_python_binary_path = '/home/meyn_ol/anaconda3/envs/tf/bin/python'
+" Note: This call makes only YCM plugin aware of tensorflow anaconda env.
+" vim uses same python as current user.
 
 "
 " vim-airline config START
