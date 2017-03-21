@@ -84,9 +84,34 @@ set expandtab     " On pressing tab, insert <shiftwidth> spaces
 " Latex configuration
 "
 " vimtex_view_* defines the used PDF viewer and enables forward search
-let g:vimtex_view_general_viewer = 'okular'
-let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-let g:vimtex_view_general_options_latexmk = '--unique'
+" if $(uname -r) == "3.13.0-79-generic"
+"  let g:vimtex_view_general_viewer = 'okular'
+"  let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+"  let g:vimtex_view_general_options_latexmk = '--unique'
+" if $(uname -r) == "15.6.0"
+  let g:vimtex_view_general_viewer
+        \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+  let g:vimtex_view_general_options = '-r @line @pdf @tex'
+
+  " This adds a callback hook that updates Skim after compilation
+  let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+  function! UpdateSkim(status)
+    if !a:status | return | endif
+
+    let l:out = b:vimtex.out()
+    let l:tex = expand('%:p')
+    let l:cmd = [g:vimtex_view_general_viewer, '-r']
+    if !empty(system('pgrep Skim'))
+      call extend(l:cmd, ['-g'])
+    endif
+    if has('nvim')
+      call jobstart(l:cmd + [line('.'), l:out, l:tex])
+    elseif has('job')
+      call job_start(l:cmd + [line('.'), l:out, l:tex])
+    else
+      call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+    endif
+  endfunction
 
 " Vimtex uses YouCompleteMe for auto completion of Latex code
 if !exists('g:ycm_semantic_triggers')
