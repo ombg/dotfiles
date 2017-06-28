@@ -1,0 +1,173 @@
+" 
+" If you run old vim, no plugins are loaded
+"
+if v:version < 704
+  finish
+endif
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+"
+" V U N D L E  START
+"
+" let Vundle manage Vundle, required
+
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'flazz/vim-colorschemes'
+
+" Dark powered asynchronous completion framework for neovim
+Plugin 'Shougo/deoplete.nvim'
+
+" Latex plugin
+Plugin 'lervag/vimtex.git'
+
+Plugin 'scrooloose/nerdtree'
+
+" Vim looks better with airline. Nothing more nothing less.
+Plugin 'vim-airline/vim-airline'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" V U N D L E  STOP
+" Put your non-Plugin stuff after this line
+set number	  "show line numbers
+filetype plugin indent on "Detect filetype
+syntax on "Syntax highlighting
+set wrap "Soft wrap of lines.
+set encoding=utf-8
+
+"
+"My color scheme and font size
+"
+set t_Co=256      "Colors?
+colorscheme solarized
+set background=light
+set guifont=Source\ Code\ Pro\ Semibold:h15
+
+" tab navigation
+map tm :tabm 
+map tt :tabnew 
+map ts :tab split<CR>
+map <C-S-Right> :tabn<CR>
+imap <C-S-Right> <ESC>:tabn<CR>
+map <C-S-Left> :tabp<CR>
+imap <C-S-Left> <ESC>:tabp<CR>
+
+"
+"Indentation
+"
+set tabstop=2     "show exisiting tabs with 2 spaces width
+set shiftwidth=2  "when indenting, use 2 spaces width
+set expandtab     " On pressing tab, insert <shiftwidth> spaces
+
+
+"set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
+
+"
+" deoplete configuration
+" 
+" Activate deoplete by default
+let g:deoplete#enable_at_startup = 1
+
+"
+" Latex configuration
+"
+" vimtex_view_* defines the used PDF viewer and enables forward search
+if has("unix")
+  let s:uname = system("uname -s")
+  if s:uname == "Darwin\n"
+    "If you are on macOS do this
+    let g:vimtex_view_general_viewer
+          \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+    let g:vimtex_view_general_options = '-r @line @pdf @tex'
+  
+    " This adds a callback hook that updates Skim after compilation
+    let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+    function! UpdateSkim(status)
+      if !a:status | return | endif
+  
+      let l:out = b:vimtex.out()
+      let l:tex = expand('%:p')
+      let l:cmd = [g:vimtex_view_general_viewer, '-r']
+      if !empty(system('pgrep Skim'))
+        call extend(l:cmd, ['-g'])
+      endif
+      if has('nvim')
+        call jobstart(l:cmd + [line('.'), l:out, l:tex])
+      elseif has('job')
+        call job_start(l:cmd + [line('.'), l:out, l:tex])
+      else
+        call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+      endif
+    endfunction
+  else
+    "If you are on Linux do this
+    let g:vimtex_view_general_viewer = 'okular'
+    let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+    let g:vimtex_view_general_options_latexmk = '--unique'
+  endif
+endif
+
+let g:tex_flavor = 'latex'  "Needed to load vimtex on startup on Macbook
+"Vim handles the following file types as latex files as well.
+augroup set_latex_filetypes
+    autocmd!
+    autocmd BufRead,BufNewFile *.pgf     set filetype=tex
+    autocmd BufRead,BufNewFile *.tikz    set filetype=tex
+    autocmd BufRead,BufNewFile *.pdf_tex set filetype=tex
+augroup END
+
+"
+" vim-airline config START
+" 
+
+" Let airline statusbar appear all the time
+set laststatus=2
+" Leave Insert Mode more quickly when pressing ESC.
+set ttimeoutlen=50
+" Get rid of the default mode indicator
+set noshowmode
+
+"The following symbol stuff is needed to get rid of strange symbols
+"ASFAIK no patching of fonts is required for airline.
+" See also https://www.banquise.org/software/bye-bye-vim-powerline-hello-airline/
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+"
+" vim-airline config STOP
+"
+
