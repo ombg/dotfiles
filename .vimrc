@@ -31,6 +31,13 @@ Plugin 'Shougo/neocomplete'
 
 Plugin 'scrooloose/nerdtree'
 
+" This plugin provides C++ debbuging integration using lldb
+"DO NOT USE ON UBUNTU
+"Plugin  'gilligan/vim-lldb' 
+
+" This plugin provides C++ debbuging integration using g++
+Plugin 'vim-scripts/Conque-GDB'
+
 " YouCompleteMe is a fast, as-you-type, fuzzy-search code completion engine
 Plugin 'Valloric/YouCompleteMe'
 
@@ -39,6 +46,7 @@ Plugin 'Valloric/YouCompleteMe'
 
 " Vim looks better with airline. Nothing more nothing less.
 Plugin 'vim-airline/vim-airline'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -54,29 +62,41 @@ set wrap "Soft wrap of lines.
 set encoding=utf-8
 
 "
-"My color scheme and font size
+"My color scheme 
 "
 set t_Co=256      "Colors?
 colorscheme hybrid
 set background=dark
-set guifont=Menlo\ Regular:h15
 
 " tab navigation
 map tm :tabm 
 map tt :tabnew 
+map tn :tabn<CR>
+map tp :tabp<CR>
 map ts :tab split<CR>
-map <C-S-Right> :tabn<CR>
-imap <C-S-Right> <ESC>:tabn<CR>
-map <C-S-Left> :tabp<CR>
-imap <C-S-Left> <ESC>:tabp<CR>
+"map <C-S-Right> :tabn<CR>
+"imap <C-S-Right> <ESC>:tabn<CR>
+"map <C-S-Left> :tabp<CR>
+"imap <C-S-Left> <ESC>:tabp<CR>
+
+" navigate windows with Alt key( aka meta or M) plus arrows
+map <silent><M-Right> <c-w>l
+map <silent><M-Left> <c-w>h
+map <silent><M-Up> <c-w>k
+map <silent><M-Down> <c-w>j
+imap <silent><M-Right> <ESC><c-w>l
+imap <silent><M-Left> <ESC><c-w>h
+imap <silent><M-Up> <ESC><c-w>k
+imap <silent><M-Down> <ESC><c-w>j
 
 "
-"Indentation
+" Code formatting
 "
 set tabstop=2     "show exisiting tabs with 2 spaces width
 set shiftwidth=2  "when indenting, use 2 spaces width
 set expandtab     " On pressing tab, insert <shiftwidth> spaces
 
+"set foldmethod=indent <== Warning! BULLSHIT!
 
 "set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
 
@@ -84,34 +104,9 @@ set expandtab     " On pressing tab, insert <shiftwidth> spaces
 " Latex configuration
 "
 " vimtex_view_* defines the used PDF viewer and enables forward search
-" if $(uname -r) == "3.13.0-79-generic"
-"  let g:vimtex_view_general_viewer = 'okular'
-"  let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-"  let g:vimtex_view_general_options_latexmk = '--unique'
-" if $(uname -r) == "15.6.0"
-  let g:vimtex_view_general_viewer
-        \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-  let g:vimtex_view_general_options = '-r @line @pdf @tex'
-
-  " This adds a callback hook that updates Skim after compilation
-  let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
-  function! UpdateSkim(status)
-    if !a:status | return | endif
-
-    let l:out = b:vimtex.out()
-    let l:tex = expand('%:p')
-    let l:cmd = [g:vimtex_view_general_viewer, '-r']
-    if !empty(system('pgrep Skim'))
-      call extend(l:cmd, ['-g'])
-    endif
-    if has('nvim')
-      call jobstart(l:cmd + [line('.'), l:out, l:tex])
-    elseif has('job')
-      call job_start(l:cmd + [line('.'), l:out, l:tex])
-    else
-      call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-    endif
-  endfunction
+let g:vimtex_view_general_viewer = 'okular'
+let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+let g:vimtex_view_general_options_latexmk = '--unique'
 
 " Vimtex uses YouCompleteMe for auto completion of Latex code
 if !exists('g:ycm_semantic_triggers')
