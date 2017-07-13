@@ -1,3 +1,4 @@
+let g:mapleader = "\<Space>"
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -47,7 +48,55 @@ Plugin 'Valloric/YouCompleteMe'
 " Vim looks better with airline. Nothing more nothing less.
 Plugin 'vim-airline/vim-airline'
 
+" Syntastic is a syntax checking plugin for literarly all languages.
+Plugin 'vim-syntastic/syntastic'
 
+" Integration of FZF, a fuzzy finder
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'junegunn/fzf.vim'
+" {{{
+  let g:fzf_nvim_statusline = 0 " disable statusline overwriting
+
+  nnoremap <silent> <leader><space> :Files<CR>
+  nnoremap <silent> <leader>a :Buffers<CR>
+  nnoremap <silent> <leader>A :Windows<CR>
+  nnoremap <silent> <leader>; :BLines<CR>
+  nnoremap <silent> <leader>o :BTags<CR>
+  nnoremap <silent> <leader>O :Tags<CR>
+  nnoremap <silent> <leader>? :History<CR>
+  nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
+  nnoremap <silent> <leader>. :AgIn 
+
+  nnoremap <silent> K :call SearchWordWithAg()<CR>
+  vnoremap <silent> K :call SearchVisualSelectionWithAg()<CR>
+  nnoremap <silent> <leader>gl :Commits<CR>
+  nnoremap <silent> <leader>ga :BCommits<CR>
+  nnoremap <silent> <leader>ft :Filetypes<CR>
+
+  imap <C-x><C-f> <plug>(fzf-complete-file-ag)
+  imap <C-x><C-l> <plug>(fzf-complete-line)
+
+  function! SearchWordWithAg()
+    execute 'Ag' expand('<cword>')
+  endfunction
+
+  function! SearchVisualSelectionWithAg() range
+    let old_reg = getreg('"')
+    let old_regtype = getregtype('"')
+    let old_clipboard = &clipboard
+    set clipboard&
+    normal! ""gvy
+    let selection = getreg('"')
+    call setreg('"', old_reg, old_regtype)
+    let &clipboard = old_clipboard
+    execute 'Ag' selection
+  endfunction
+
+  function! SearchWithAgInDirectory(...)
+    call fzf#vim#ag(join(a:000[1:], ' '), extend({'dir': a:1}, g:fzf#vim#default_layout))
+  endfunction
+  command! -nargs=+ -complete=dir AgIn call SearchWithAgInDirectory(<f-args>)
+" }}}
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 " To ignore plugin indent changes, instead use:
@@ -60,13 +109,25 @@ filetype plugin indent on "Detect filetype
 syntax on "Syntax highlighting
 set wrap "Soft wrap of lines.
 set encoding=utf-8
+"Shows tabs and trailing whitespaces
+set list
+set listchars=tab:>.,trail:.,extends:#,nbsp:.
+set mouse=a "Enable mouse scrolling
+" Natural jump in long text lines.
+"nnoremap j gj
+"nnoremap k gk"
 
-"
 "My color scheme 
 "
 set t_Co=256      "Colors?
 colorscheme hybrid
 set background=dark
+
+" Operations on buffers
+" Shows all exisiting buffers and prompts user to enter buf number.
+nnoremap fv :ls<cr>:b
+" Go to previous buffer
+nnoremap ff :b#<cr>
 
 " tab navigation
 map tm :tabm 
@@ -172,5 +233,21 @@ let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 "
 " vim-airline config STOP
+"
+
+"
+" Syntastic config START
+"
+autocmd VimEnter * SyntasticToggleMode " disable syntastic by default
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+"
+" Syntastic config STOP
 "
 
