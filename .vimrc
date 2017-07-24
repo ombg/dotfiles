@@ -39,17 +39,39 @@ Plugin 'scrooloose/nerdtree'
 " This plugin provides C++ debbuging integration using g++
 Plugin 'vim-scripts/Conque-GDB'
 
+" Use GNU GLOBAL gtags
+Plugin 'joereynolds/gtags-scope'
+" {{{
+  "Search both cscopes database and the tags file
+  set cscopetag
+  " Cscope settings (Not sure if it really needs the vim plugin for this.)
+  " This function creates a list of al references of the word under the cursor.
+  function! Csc()
+    cscope find c <cword>
+    copen
+  endfunction
+  " Map a shortcut to use it.
+  command! Csc call Csc()
+" }}}
 " YouCompleteMe is a fast, as-you-type, fuzzy-search code completion engine
 Plugin 'Valloric/YouCompleteMe'
-
-" Super simple vim plugin to show the list of buffers in the command bar.
-"Plugin 'bling/vim-bufferline'
 
 " Vim looks better with airline. Nothing more nothing less.
 Plugin 'vim-airline/vim-airline'
 
 " Syntastic is a syntax checking plugin for literarly all languages.
-Plugin 'vim-syntastic/syntastic'
+" Plugin 'vim-syntastic/syntastic'
+" {{{
+"  autocmd VimEnter * SyntasticToggleMode " disable syntastic by default
+"  set statusline+=%#warningmsg#
+"  set statusline+=%{SyntasticStatuslineFlag()}
+"  set statusline+=%*
+"  
+"  let g:syntastic_always_populate_loc_list = 1
+"  let g:syntastic_auto_loc_list = 1
+"  let g:syntastic_check_on_open = 1
+"  let g:syntastic_check_on_wq = 0
+" }}}
 
 " Integration of FZF, a fuzzy finder
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -233,21 +255,5 @@ let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 "
 " vim-airline config STOP
-"
-
-"
-" Syntastic config START
-"
-autocmd VimEnter * SyntasticToggleMode " disable syntastic by default
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-"
-" Syntastic config STOP
 "
 
