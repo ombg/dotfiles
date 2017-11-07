@@ -59,6 +59,13 @@ Plugin 'Valloric/YouCompleteMe'
 " Vim looks better with airline. Nothing more nothing less.
 Plugin 'vim-airline/vim-airline'
 
+"Python syntax highlighting for VIM
+Plugin 'vim-python/python-syntax'
+" {{{
+  "Enable all syntax highlighting features
+  let g:python_highlight_all = 1
+" }}}
+
 " Syntastic is a syntax checking plugin for literarly all languages.
 " Plugin 'vim-syntastic/syntastic'
 " {{{
@@ -126,19 +133,42 @@ call vundle#end()            " required
 "
 " V U N D L E  STOP
 " Put your non-Plugin stuff after this line
-set number	  "show line numbers
 filetype plugin indent on "Detect filetype
 syntax on "Syntax highlighting
+
+"
+" Code formatting
+"
+set tabstop=4     "show exisiting tabs with 2 spaces width
+set shiftwidth=4  "when indenting, use 2 spaces width
+set expandtab     " On pressing tab, insert <shiftwidth> spaces
+set autoindent    " copy indent from current line when starting a new line
+set number	  "show line numbers
 set wrap "Soft wrap of lines.
 set encoding=utf-8
+set backspace=indent,eol,start " make backspace more powerful
 "Shows tabs and trailing whitespaces
 set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
-set mouse=a "Enable mouse scrolling
-" Natural jump in long text lines.
-"nnoremap j gj
-"nnoremap k gk"
 
+set mouse=a "Enable mouse scrolling
+
+"Overriding tab settings made by ftplugin.
+"SetupPython() is then called at the following location:
+"~/.vim/after/ftplugin/python.vim
+"See https://stackoverflow.com/a/21074056/166435 for details.
+"function! SetupPython()
+"  " Here, you can have the final say on what is set.  So
+"  " fixup any settings you don't like.
+"  setlocal softtabstop=2
+"  setlocal tabstop=2
+"  setlocal shiftwidth=2
+"  set expandtab
+"  set autoindent
+"endfunction
+"command! -bar SetupPython call SetupPython()
+
+"
 "My color scheme 
 "
 set t_Co=256      "Colors?
@@ -151,6 +181,8 @@ nnoremap fv :ls<cr>:b
 " Go to previous buffer
 nnoremap ff :b#<cr>
 
+" Change working directory to the active file's directory.
+nnoremap fd :cd %:p:h<cr>
 " tab navigation
 map tm :tabm 
 map tt :tabnew 
@@ -172,14 +204,6 @@ imap <silent><M-Left> <ESC><c-w>h
 imap <silent><M-Up> <ESC><c-w>k
 imap <silent><M-Down> <ESC><c-w>j
 
-"
-" Code formatting
-"
-set tabstop=2     "show exisiting tabs with 2 spaces width
-set shiftwidth=2  "when indenting, use 2 spaces width
-set expandtab     " On pressing tab, insert <shiftwidth> spaces
-
-"set foldmethod=indent <== Warning! BULLSHIT!
 
 "set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
 
