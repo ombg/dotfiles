@@ -1,0 +1,4 @@
+# ~/.bashrc-othrys2: executed by default ~/.bashrc if on host othrys2
+
+sh ~/.bashrc-othrys
+

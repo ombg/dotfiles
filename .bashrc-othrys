@@ -1,0 +1,27 @@
+# ~/.bashrc-othrys: executed by default ~/.bashrc if on host othrys
+
+# Set vim as default editor
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# aliases
+# Detailed file list
+alias ll='ls -laF'
+# CD to data directory - the de-facto HOME
+alias h='cd /space/export/data/meyn_ol/'
+# Activates anaconda tensorflow environment
+alias stf='source activate tf'
+# Show grep result in color. It only works if not part of pipe cmd.
+alias grepc='grep --color=auto'
+
+# Show command history with timestamps
+export HISTTIMEFORMAT="%y-%m-%d %T "
+
+# CUDA dirs
+export CUDA_HOME=/usr/local/cuda
+export PATH=${CUDA_HOME}/bin:$PATH
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CUDA_HOME}/lib64:${CUDA_HOME}/extras/CUPTI/lib64
+
+# added by Anaconda3 4.1.1 installer
+# ATM, I use zarquon's up-to-date TF installation
+export PATH="/home/meyn_ol/anaconda3/bin:$PATH"

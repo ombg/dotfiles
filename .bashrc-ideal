@@ -1,0 +1,29 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+#source $HOME/local_install/xdibias2.release/setenv_xdibias.sh 
+#define aliases
+alias ll='ls -laF'
+alias nau='nautilus .'
+
+# Setup python virtualenv and virtualenvwrapper
+# See here: http://www.pyimagesearch.com/2015/07/20/install-opencv-3-0-and-python-3-4-on-ubuntu/
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+# CUDA dirs
+export CUDA_PATH=/usr/local/cuda-7.0
+export PATH=${CUDA_PATH}/bin:$PATH
+export LD_LIBRARY_PATH=${CUDA_PATH}/lib64:${LD_LIBRARY_PATH}
+
+# BVLC Caffe library
+export PYTHONPATH=$HOME/projects/dl/caffe/distribute/python:$PYTHONPATH
+export LD_LIBRARY_PATH=$HOME/projects/dl/caffe/distribute/lib:${LD_LIBRARY_PATH}
+
+# OpenCV
+export OpenCV_DIR=$HOME/usr/local
+# VLfeat
+export VLFEAT_ROOT=$HOME/usr/opt/vlfeat-0.9.19
+# HALCON
+#source $HOME/local_install/halcon/distribute/.profile_halcon
+

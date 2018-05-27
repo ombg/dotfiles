@@ -1,0 +1,74 @@
+# ~/.bashrc-zarquon: executed by default ~/.bashrc if on host zarquon
+
+# Set vim as default editor
+export VISUAL=vim
+export EDITOR="$VISUAL"
+# Modify prompt
+# Default PS1:
+# ${debian_chroot:+($debian_chroot)}\u@\h:\w\$
+# Modified  PS1:
+PS1='$(((SHLVL>1))&&echo $SHLVL)\$'$PS1
+
+#
+#define aliases and functions
+#
+alias ..='cd ..'
+alias stf='source activate tf' # Activates anaconda tensorflow environment
+alias ll='ls -laF'
+alias nau='nautilus '
+alias mc='. /usr/share/mc/bin/mc-wrapper.sh'
+alias gis='git status'
+alias gim='git commit -m'
+alias wtf='python -m pdb -c continue' # What is happening here?
+# Open ranger file manager
+alias rr='ranger'
+#Search for all python (and pyc) files in a directory containing a given string.
+alias grepy='grep --include=\*.{py,pyc} -ril'
+# Open a new terminal window with given profile (no byobu).
+alias gg='gnome-terminal --window-with-profile=Default & disown'
+#Create directory and immediately cd into it.
+mkcd () { mkdir "$@" && cd "$@"; }
+# Show grep result in color. It only works if not part of pipe cmd.
+alias grepc='grep --color=auto'
+
+# Open file in existing vim session if it exists.
+# Otherwise open new editor without complaining.
+alias vv='/usr/bin/vim --servername vim --remote-silent'
+alias vv1='/usr/bin/vim --servername vim1 --remote-silent'
+alias vv2='/usr/bin/vim --servername vim2 --remote-silent'
+alias vv3='/usr/bin/vim --servername vim3 --remote-silent'
+
+## Show command history with timestamps
+export HISTTIMEFORMAT="%y-%m-%d %T "
+#Put ~/usr/opt into PATH
+export PATH=$HOME/usr/opt:$PATH
+
+# Location where to find GTAGS files for GNU GLOBAL source code tagging system
+export GTAGSLIBPATH=$HOME/git/ompy:$GTAGSLIBPATH
+
+# Set python path
+export PYTHONPATH=$HOME/git/ompy:$PYTHONPATH
+
+# CUDA dirs
+export CUDA_HOME=/usr/local/cuda
+export PATH=${CUDA_HOME}/bin:$PATH
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CUDA_HOME}/lib64:${CUDA_HOME}/extras/CUPTI/lib64
+
+# OpenCV
+export OpenCV_DIR=$HOME/usr/local
+
+# VLfeat
+export VLFEAT_ROOT=$HOME/usr/opt/vlfeat-0.9.20
+# export VLFEAT_ROOT=$HOME/git/vlfeat
+# HALCON
+#source $HOME/local_install/halcon/distribute/.profile_halcon
+
+# Google test root directory
+export GTEST_ROOT=$HOME/usr/local
+
+# added by Anaconda3 4.1.1 installer
+export PATH="/home/meyn_ol/anaconda3/bin:$PATH"
+
+# FZF Fuzzy finder 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
