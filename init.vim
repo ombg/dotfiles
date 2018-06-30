@@ -4,7 +4,7 @@
 if v:version < 704
   finish
 endif
-
+let g:mapleader = "\<Space>"
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -29,10 +29,79 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'flazz/vim-colorschemes'
+"Plugin 'flazz/vim-colorschemes'
 
 " Dark powered asynchronous completion framework for neovim
 Plugin 'Shougo/deoplete.nvim'
+" {{{
+  " Let deoplete find the default python environment.
+  " E.g., set it to Tensorflow virtual env, when using TF.
+  let g:python_host_prog =  '/Users/oliver/anaconda/envs/tensorflow/bin/python'
+  let g:python3_host_prog = '/Users/oliver/anaconda/envs/tensorflow/bin/python'
+" }}}
+
+" A command-line fuzzy finder written in Go 
+" Both plugins are needed.
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'junegunn/fzf.vim'
+" {{{
+  let g:fzf_nvim_statusline = 0 " disable statusline overwriting
+
+  nnoremap <silent> <leader><space> :Files<CR>
+  nnoremap <silent> <leader>a :Buffers<CR>
+  nnoremap <silent> <leader>A :Windows<CR>
+  nnoremap <silent> <leader>; :BLines<CR>
+  nnoremap <silent> <leader>o :BTags<CR>
+  nnoremap <silent> <leader>O :Tags<CR>
+  nnoremap <silent> <leader>? :History<CR>
+  nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
+  nnoremap <silent> <leader>. :AgIn 
+
+  nnoremap <silent> K :call SearchWordWithAg()<CR>
+  vnoremap <silent> K :call SearchVisualSelectionWithAg()<CR>
+  nnoremap <silent> <leader>gl :Commits<CR>
+  nnoremap <silent> <leader>ga :BCommits<CR>
+  nnoremap <silent> <leader>ft :Filetypes<CR>
+
+  imap <C-x><C-f> <plug>(fzf-complete-file-ag)
+  imap <C-x><C-l> <plug>(fzf-complete-line)
+
+  function! SearchWordWithAg()
+    execute 'Ag' expand('<cword>')
+  endfunction
+
+  function! SearchVisualSelectionWithAg() range
+    let old_reg = getreg('"')
+    let old_regtype = getregtype('"')
+    let old_clipboard = &clipboard
+    set clipboard&
+    normal! ""gvy
+    let selection = getreg('"')
+    call setreg('"', old_reg, old_regtype)
+    let &clipboard = old_clipboard
+    execute 'Ag' selection
+  endfunction
+
+  function! SearchWithAgInDirectory(...)
+    call fzf#vim#ag(join(a:000[1:], ' '), extend({'dir': a:1}, g:fzf#vim#default_layout))
+  endfunction
+  command! -nargs=+ -complete=dir AgIn call SearchWithAgInDirectory(<f-args>)
+" }}}
+
+" Use GNU GLOBAL gtags
+Plugin 'joereynolds/gtags-scope'
+" {{{
+  "Search both cscopes database and the tags file
+  set cscopetag
+  " Cscope settings (Not sure if it really needs the vim plugin for this.)
+  " This function creates a list of al references of the word under the cursor.
+  function! Csc()
+    cscope find c <cword>
+    copen
+  endfunction
+  " Map a shortcut to use it.
+  command! Csc call Csc()
+" }}}
 
 " Latex plugin
 Plugin 'lervag/vimtex.git'
@@ -41,6 +110,9 @@ Plugin 'scrooloose/nerdtree'
 
 " Vim looks better with airline. Nothing more nothing less.
 Plugin 'vim-airline/vim-airline'
+
+" pairs of handy bracket mappings
+Plugin 'tpope/vim-unimpaired'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -52,26 +124,24 @@ call vundle#end()            " required
 set number	  "show line numbers
 filetype plugin indent on "Detect filetype
 syntax on "Syntax highlighting
-set wrap "Soft wrap of lines.
+set nowrap "Soft wrap of lines.
+" Enable scrolling
+set mouse=a
 set encoding=utf-8
 
 "
 "My color scheme and font size
 "
 set t_Co=256      "Colors?
-colorscheme solarized
-set background=light
+"colorscheme carbonized
+"set background=dark
 set guifont=Source\ Code\ Pro\ Semibold:h15
 
-" tab navigation
-map tm :tabm 
-map tt :tabnew 
-map ts :tab split<CR>
-map <C-S-Right> :tabn<CR>
-imap <C-S-Right> <ESC>:tabn<CR>
-map <C-S-Left> :tabp<CR>
-imap <C-S-Left> <ESC>:tabp<CR>
-
+" Operations on buffers
+" Shows all exisiting buffers and prompts user to enter buf number.
+nnoremap fv :ls<cr>:b
+" Go to previous buffer
+nnoremap ff :b#<cr>
 "
 "Indentation
 "
@@ -79,6 +149,15 @@ set tabstop=2     "show exisiting tabs with 2 spaces width
 set shiftwidth=2  "when indenting, use 2 spaces width
 set expandtab     " On pressing tab, insert <shiftwidth> spaces
 
+" tab navigation
+map tm :tabm 
+map tt :tabnew 
+map tn :tabn<CR>
+map tp :tabp<CR>
+map ts :tab split<CR>
+
+"Misc mappings
+nnoremap <leader>p oimport pdb; pdb.set_trace()<Esc>
 
 "set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
 
@@ -170,4 +249,3 @@ let g:airline_symbols.whitespace = 'Ξ'
 "
 " vim-airline config STOP
 "
-
