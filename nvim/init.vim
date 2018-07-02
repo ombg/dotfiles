@@ -1,49 +1,28 @@
-" 
-" If you run old vim, no plugins are loaded
 "
-if v:version < 704
-  finish
-endif
+"Change the hot button to trigger FZF stuff
 let g:mapleader = "\<Space>"
-set nocompatible              " be iMproved, required
-filetype off                  " required
+"" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.local/share/nvim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-"
-" V U N D L E  START
-"
-" let Vundle manage Vundle, required
-
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-
-Plugin 'VundleVim/Vundle.vim'
-
-"Plugin 'flazz/vim-colorschemes'
+" Make sure you use single quotes
 
 " Dark powered asynchronous completion framework for neovim
-Plugin 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim'
 " {{{
   " Let deoplete find the default python environment.
   " E.g., set it to Tensorflow virtual env, when using TF.
-  let g:python_host_prog =  '/Users/oliver/anaconda/envs/tensorflow/bin/python'
-  let g:python3_host_prog = '/Users/oliver/anaconda/envs/tensorflow/bin/python'
+  let g:python_host_prog =  '/Users/oliver/anaconda/bin/python'
+  let g:python3_host_prog = '/Users/oliver/anaconda/bin/python'
+  " Activate deoplete by default
+  let g:deoplete#enable_at_startup = 1
 " }}}
 
 " A command-line fuzzy finder written in Go 
 " Both plugins are needed.
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plugin 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 " {{{
   let g:fzf_nvim_statusline = 0 " disable statusline overwriting
 
@@ -89,7 +68,7 @@ Plugin 'junegunn/fzf.vim'
 " }}}
 
 " Use GNU GLOBAL gtags
-Plugin 'joereynolds/gtags-scope'
+Plug 'joereynolds/gtags-scope'
 " {{{
   "Search both cscopes database and the tags file
   set cscopetag
@@ -104,22 +83,20 @@ Plugin 'joereynolds/gtags-scope'
 " }}}
 
 " Latex plugin
-Plugin 'lervag/vimtex.git'
+Plug 'lervag/vimtex'
 
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
 " Vim looks better with airline. Nothing more nothing less.
-Plugin 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 
 " pairs of handy bracket mappings
-Plugin 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" V U N D L E  STOP
+" Initialize plugin system
+call plug#end()
+
 " Put your non-Plugin stuff after this line
 set number	  "show line numbers
 filetype plugin indent on "Detect filetype
@@ -145,8 +122,8 @@ nnoremap ff :b#<cr>
 "
 "Indentation
 "
-set tabstop=2     "show exisiting tabs with 2 spaces width
-set shiftwidth=2  "when indenting, use 2 spaces width
+set tabstop=4     "show exisiting tabs with 2 spaces width
+set shiftwidth=4  "when indenting, use 2 spaces width
 set expandtab     " On pressing tab, insert <shiftwidth> spaces
 
 " tab navigation
@@ -161,11 +138,6 @@ nnoremap <leader>p oimport pdb; pdb.set_trace()<Esc>
 
 "set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
 
-"
-" deoplete configuration
-" 
-" Activate deoplete by default
-let g:deoplete#enable_at_startup = 1
 
 "
 " Latex configuration
