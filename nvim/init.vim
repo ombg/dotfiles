@@ -95,8 +95,12 @@ Plug 'tpope/vim-unimpaired'
 
 " latex live preview - plugin for neovim and vim 8
 Plug 'donRaphaco/neotex', { 'for': 'tex' }
+" {{{
+    let g:neotex_enabled=2              " 0 = always disabled, 1 = default off, 2 = default on
+    let g:neotex_latexdiff=1            " enable latexdiff
+" }}}
 
-" All of your Plugins must be added before the following line
+" All of your Plugins must be added before the following line which does:
 " Initialize plugin system
 call plug#end()
 
@@ -184,13 +188,13 @@ nnoremap <leader>p oimport pdb; pdb.set_trace()<Esc>
 
 " Needed for vimtex / neotex...
 let g:tex_flavor = 'latex'
-" "Vim handles the following file types as latex files as well.
-" augroup set_latex_filetypes
-"     autocmd!
-"     autocmd BufRead,BufNewFile *.pgf     set filetype=tex
-"     autocmd BufRead,BufNewFile *.tikz    set filetype=tex
-"     autocmd BufRead,BufNewFile *.pdf_tex set filetype=tex
-" augroup END
+"Vim handles the following file types as latex files as well.
+augroup set_latex_filetypes
+    autocmd!
+    autocmd BufRead,BufNewFile *.pgf     set filetype=tex
+    autocmd BufRead,BufNewFile *.tikz    set filetype=tex
+    autocmd BufRead,BufNewFile *.pdf_tex set filetype=tex
+augroup END
 
 "
 " vim-airline config START
