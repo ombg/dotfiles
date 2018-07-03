@@ -83,7 +83,7 @@ Plug 'joereynolds/gtags-scope'
 " }}}
 
 " Latex plugin
-Plug 'lervag/vimtex'
+" Plug 'lervag/vimtex'
 
 Plug 'scrooloose/nerdtree'
 
@@ -92,6 +92,9 @@ Plug 'vim-airline/vim-airline'
 
 " pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
+
+" latex live preview - plugin for neovim and vim 8
+Plug 'donRaphaco/neotex', { 'for': 'tex' }
 
 " All of your Plugins must be added before the following line
 " Initialize plugin system
@@ -143,49 +146,51 @@ nnoremap <leader>p oimport pdb; pdb.set_trace()<Esc>
 " Latex configuration
 "
 " vimtex_view_* defines the used PDF viewer and enables forward search
-if has("unix")
-  let s:uname = system("uname -s")
-  if s:uname == "Darwin\n"
-    "If you are on macOS do this
-    let g:vimtex_view_general_viewer
-          \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-    let g:vimtex_view_general_options = '-r @line @pdf @tex'
-  
-    " This adds a callback hook that updates Skim after compilation
-    let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
-    function! UpdateSkim(status)
-      if !a:status | return | endif
-  
-      let l:out = b:vimtex.out()
-      let l:tex = expand('%:p')
-      let l:cmd = [g:vimtex_view_general_viewer, '-r']
-      if !empty(system('pgrep Skim'))
-        call extend(l:cmd, ['-g'])
-      endif
-      if has('nvim')
-        call jobstart(l:cmd + [line('.'), l:out, l:tex])
-      elseif has('job')
-        call job_start(l:cmd + [line('.'), l:out, l:tex])
-      else
-        call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-      endif
-    endfunction
-  else
-    "If you are on Linux do this
-    let g:vimtex_view_general_viewer = 'okular'
-    let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-    let g:vimtex_view_general_options_latexmk = '--unique'
-  endif
-endif
+" if has("unix")
+"   let s:uname = system("uname -s")
+"   if s:uname == "Darwin\n"
+"     "If you are on macOS do this
+"     let g:vimtex_view_general_viewer
+"           \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+"     let g:vimtex_view_general_options = '-r @line @pdf @tex'
+"   
+"     " This adds a callback hook that updates Skim after compilation
+"     let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+"     function! UpdateSkim(status)
+"       if !a:status | return | endif
+"   
+"       let l:out = b:vimtex.out()
+"       let l:tex = expand('%:p')
+"       let l:cmd = [g:vimtex_view_general_viewer, '-r']
+"       if !empty(system('pgrep Skim'))
+"         call extend(l:cmd, ['-g'])
+"       endif
+"       if has('nvim')
+"         call jobstart(l:cmd + [line('.'), l:out, l:tex])
+"       elseif has('job')
+"         call job_start(l:cmd + [line('.'), l:out, l:tex])
+"       else
+"         call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+"       endif
+"     endfunction
+"   else
+"     "If you are on Linux do this
+"     let g:vimtex_view_general_viewer = 'okular'
+"     let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+"     let g:vimtex_view_general_options_latexmk = '--unique'
+"   endif
+" endif
+" 
 
-let g:tex_flavor = 'latex'  "Needed to load vimtex on startup on Macbook
-"Vim handles the following file types as latex files as well.
-augroup set_latex_filetypes
-    autocmd!
-    autocmd BufRead,BufNewFile *.pgf     set filetype=tex
-    autocmd BufRead,BufNewFile *.tikz    set filetype=tex
-    autocmd BufRead,BufNewFile *.pdf_tex set filetype=tex
-augroup END
+" Needed for vimtex / neotex...
+let g:tex_flavor = 'latex'
+" "Vim handles the following file types as latex files as well.
+" augroup set_latex_filetypes
+"     autocmd!
+"     autocmd BufRead,BufNewFile *.pgf     set filetype=tex
+"     autocmd BufRead,BufNewFile *.tikz    set filetype=tex
+"     autocmd BufRead,BufNewFile *.pdf_tex set filetype=tex
+" augroup END
 
 "
 " vim-airline config START
