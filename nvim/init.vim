@@ -82,9 +82,6 @@ Plug 'joereynolds/gtags-scope'
   command! Csc call Csc()
 " }}}
 
-" Latex plugin
-" Plug 'lervag/vimtex'
-
 Plug 'scrooloose/nerdtree'
 
 " Vim looks better with airline. Nothing more nothing less.
@@ -92,6 +89,47 @@ Plug 'vim-airline/vim-airline'
 
 " pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
+
+" Latex plugin
+Plug 'lervag/vimtex'
+" {{{
+" vimtex_view_* defines the used PDF viewer and enables forward search
+    let g:vimtex_compiler_progname = 'nvr'
+    if has("unix")
+      let s:uname = system("uname -s")
+      if s:uname == "Darwin\n"
+        "If you are on macOS do this
+        let g:vimtex_view_general_viewer
+              \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+        let g:vimtex_view_general_options = '-r @line @pdf @tex'
+      
+        " This adds a callback hook that updates Skim after compilation
+        let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+        function! UpdateSkim(status)
+          if !a:status | return | endif
+      
+          let l:out = b:vimtex.out()
+          let l:tex = expand('%:p')
+          let l:cmd = [g:vimtex_view_general_viewer, '-r']
+          if !empty(system('pgrep Skim'))
+            call extend(l:cmd, ['-g'])
+          endif
+          if has('nvim')
+            call jobstart(l:cmd + [line('.'), l:out, l:tex])
+          elseif has('job')
+            call job_start(l:cmd + [line('.'), l:out, l:tex])
+          else
+            call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+          endif
+        endfunction
+      else
+        "If you are on Linux do this
+        let g:vimtex_view_general_viewer = 'okular'
+        let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+        let g:vimtex_view_general_options_latexmk = '--unique'
+      endif
+    endif
+" }}}
 
 " latex live preview - plugin for neovim and vim 8
 Plug 'donRaphaco/neotex', { 'for': 'tex' }
@@ -145,56 +183,20 @@ nnoremap <leader>p oimport pdb; pdb.set_trace()<Esc>
 
 "set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
 
-
-"
-" Latex configuration
-"
-" vimtex_view_* defines the used PDF viewer and enables forward search
-" if has("unix")
-"   let s:uname = system("uname -s")
-"   if s:uname == "Darwin\n"
-"     "If you are on macOS do this
-"     let g:vimtex_view_general_viewer
-"           \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-"     let g:vimtex_view_general_options = '-r @line @pdf @tex'
-"   
-"     " This adds a callback hook that updates Skim after compilation
-"     let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
-"     function! UpdateSkim(status)
-"       if !a:status | return | endif
-"   
-"       let l:out = b:vimtex.out()
-"       let l:tex = expand('%:p')
-"       let l:cmd = [g:vimtex_view_general_viewer, '-r']
-"       if !empty(system('pgrep Skim'))
-"         call extend(l:cmd, ['-g'])
-"       endif
-"       if has('nvim')
-"         call jobstart(l:cmd + [line('.'), l:out, l:tex])
-"       elseif has('job')
-"         call job_start(l:cmd + [line('.'), l:out, l:tex])
-"       else
-"         call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-"       endif
-"     endfunction
-"   else
-"     "If you are on Linux do this
-"     let g:vimtex_view_general_viewer = 'okular'
-"     let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-"     let g:vimtex_view_general_options_latexmk = '--unique'
-"   endif
-" endif
 " 
-
-" Needed for vimtex / neotex...
+" Latex config which does not belong to Latex plugins 
+"
+" Needed for several Latex plugins
 let g:tex_flavor = 'latex'
-"Vim handles the following file types as latex files as well.
+
+" Vim handles the following file types as latex files as well.
 augroup set_latex_filetypes
     autocmd!
     autocmd BufRead,BufNewFile *.pgf     set filetype=tex
     autocmd BufRead,BufNewFile *.tikz    set filetype=tex
     autocmd BufRead,BufNewFile *.pdf_tex set filetype=tex
 augroup END
+
 
 "
 " vim-airline config START
