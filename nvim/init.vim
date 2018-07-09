@@ -18,10 +18,20 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " }}}
 
 " deoplete.nvim source for Python
-" This enables the Shift+k and Ctrl+space completion
+" Enables auto completion for Python using Jedi.
 Plug 'zchee/deoplete-jedi'
 " {{{
     let g:deoplete#sources#jedi#server_timeout = 15
+" }}}
+
+" Jedi autocompletion library for VIM
+" However, I use deoplete-jedi for autocompletion. Jedi-vim is just used
+" for code jumps, e.g. function caller to function callee
+Plug 'davidhalter/jedi-vim'
+" {{{
+    "DO NOT use jedi-vim autocompletion, see above and here:
+    " https://github.com/davidhalter/jedi-vim#the-completion-is-too-slow
+    let g:jedi#completions_enabled = 0
 " }}}
 
 " A command-line fuzzy finder written in Go 
