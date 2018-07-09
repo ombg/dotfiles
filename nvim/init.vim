@@ -20,6 +20,9 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " deoplete.nvim source for Python
 " This enables the Shift+k and Ctrl+space completion
 Plug 'zchee/deoplete-jedi'
+" {{{
+    let g:deoplete#sources#jedi#server_timeout = 15
+" }}}
 
 " A command-line fuzzy finder written in Go 
 " Both plugins are needed.
