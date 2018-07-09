@@ -6,18 +6,20 @@ let g:mapleader = "\<Space>"
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Make sure you use single quotes
-
 " Dark powered asynchronous completion framework for neovim
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " {{{
-  " Let deoplete find the default python environment.
-  " E.g., set it to Tensorflow virtual env, when using TF.
-  let g:python_host_prog =  '/Users/oliver/anaconda/bin/python'
-  let g:python3_host_prog = '/Users/oliver/anaconda/bin/python'
-  " Activate deoplete by default
-  let g:deoplete#enable_at_startup = 1
+    " Let deoplete find the default python environment.
+    " E.g., set it to Tensorflow virtual env, when using TF.
+    let g:python_host_prog =  '/Users/oliver/anaconda/bin/python'
+    let g:python3_host_prog = '/Users/oliver/anaconda/bin/python'
+    " Activate deoplete by default
+    let g:deoplete#enable_at_startup = 1
 " }}}
+
+" deoplete.nvim source for Python
+" This enables the Shift+k and Ctrl+space completion
+Plug 'zchee/deoplete-jedi'
 
 " A command-line fuzzy finder written in Go 
 " Both plugins are needed.
