@@ -11,8 +11,8 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " {{{
     " Let deoplete find the default python environment.
     " E.g., set it to Tensorflow virtual env, when using TF.
-    let g:python_host_prog =  '/Users/oliver/anaconda/bin/python'
-    let g:python3_host_prog = '/Users/oliver/anaconda/bin/python'
+    let g:python_host_prog =  'python3'
+    let g:python3_host_prog = 'python3'
     " Activate deoplete by default
     let g:deoplete#enable_at_startup = 1
 " }}}
@@ -119,25 +119,25 @@ Plug 'lervag/vimtex'
             let g:vimtex_view_general_options = '-r @line @pdf @tex'
             let g:vimtex_view_automatic = 1
       
-        " This adds a callback hook that updates Skim after compilation
-        let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
-        function! UpdateSkim(status)
-            if !a:status | return | endif
-        
-            let l:out = b:vimtex.out()
-            let l:tex = expand('%:p')
-            let l:cmd = [g:vimtex_view_general_viewer, '-r']
-            if !empty(system('pgrep Skim'))
-                call extend(l:cmd, ['-g'])
-            endif
-            if has('nvim')
-                call jobstart(l:cmd + [line('.'), l:out, l:tex])
-            elseif has('job')
-                call job_start(l:cmd + [line('.'), l:out, l:tex])
-            else
-                call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-            endif
-        endfunction
+            " This adds a callback hook that updates Skim after compilation
+            let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+            function! UpdateSkim(status)
+                if !a:status | return | endif
+           
+                let l:out = b:vimtex.out()
+                let l:tex = expand('%:p')
+                let l:cmd = [g:vimtex_view_general_viewer, '-r']
+                if !empty(system('pgrep Skim'))
+                    call extend(l:cmd, ['-g'])
+                endif
+                if has('nvim')
+                    call jobstart(l:cmd + [line('.'), l:out, l:tex])
+                elseif has('job')
+                    call job_start(l:cmd + [line('.'), l:out, l:tex])
+                else
+                    call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+                endif
+            endfunction
         else
             "If you are on Linux do this
             let g:vimtex_view_general_viewer = 'okular'
