@@ -97,10 +97,8 @@ Plug 'joereynolds/gtags-scope'
   command! Csc call Csc()
 " }}}
 
-Plug 'scrooloose/nerdtree'
-
-" Vim looks better with airline. Nothing more nothing less.
-Plug 'vim-airline/vim-airline'
+" A light and configurable statusline/tabline plugin for Vim
+Plug 'itchyny/lightline.vim'
 
 " pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
@@ -170,10 +168,10 @@ set encoding=utf-8
 "
 "My color scheme and font size
 "
-set t_Co=256      "Colors?
+"set t_Co=256      "Colors?
 "colorscheme carbonized
 "set background=dark
-set guifont=Source\ Code\ Pro\ Semibold:h15
+"set guifont=Source\ Code\ Pro\ Semibold:h15
 
 " Operations on buffers
 " Shows all exisiting buffers and prompts user to enter buf number.
@@ -214,37 +212,3 @@ augroup set_latex_filetypes
 augroup END
 
 
-"
-" vim-airline config START
-" 
-
-" Let airline statusbar appear all the time
-set laststatus=2
-" Leave Insert Mode more quickly when pressing ESC.
-set ttimeoutlen=50
-" Get rid of the default mode indicator
-set noshowmode
-
-"The following symbol stuff is needed to get rid of strange symbols
-"ASFAIK no patching of fonts is required for airline.
-" See also https://www.banquise.org/software/bye-bye-vim-powerline-hello-airline/
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-"
-" vim-airline config STOP
-"

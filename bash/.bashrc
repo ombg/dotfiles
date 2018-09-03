@@ -4,6 +4,10 @@ if [[ "$(hostname)" == *mac* ]]; then
   source ~/git/dotfiles/bash/.bashrc-mac
 fi
 
+if [[ "$(hostname)" == *chewbacca* ]]; then
+  source ~/git/dotfiles/bash/.bashrc-chewbacca
+fi
+
 if [[ "$(hostname)" == *zarquon* ]]; then
   source ~/git/dotfiles/bash/.bashrc-zarquon
 fi
