@@ -1,0 +1,9 @@
+**/build/*
+*GPATH
+*GRTAGS
+*GTAGS
+*~
+.DS_Store
+*.ppm
+compile_commands.json
+.idea
