@@ -11,8 +11,8 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " {{{
     " Let deoplete find the default python environment.
     " E.g., set it to Tensorflow virtual env, when using TF.
-    let g:python_host_prog =  'python3'
-    let g:python3_host_prog = 'python3'
+    let g:python_host_prog =  '/usr/bin/python'
+    let g:python3_host_prog = '/home/oliver/.local/share/virtualenvs/nvim-9vUTIy8K/bin/python'
     " Activate deoplete by default
     let g:deoplete#enable_at_startup = 1
 " }}}
