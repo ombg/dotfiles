@@ -193,7 +193,10 @@ map tp :tabp<CR>
 map ts :tab split<CR>
 
 "Misc mappings
-nnoremap <leader>p oimport pdb; pdb.set_trace()<Esc>
+" TODO: explanation
+nnoremap <leader>p import pdb; pdb.set_trace()<Esc>
+" Change to directory of current file.
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 "set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
 
