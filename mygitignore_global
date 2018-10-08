@@ -7,3 +7,6 @@
 *.ppm
 compile_commands.json
 .idea
+.env
+**/__pycache__/*
+release
