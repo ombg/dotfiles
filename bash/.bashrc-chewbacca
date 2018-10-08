@@ -119,6 +119,7 @@ fi
 
 # Python aliases
 alias prp="pipenv run python"
+alias pys="pipenv shell"
 
 # GIT aliases
 alias gis="git status"
@@ -131,10 +132,10 @@ alias rr="ranger"
 # VIM aliases
 alias nvim="$HOME/usr/opt/nvim"
 alias vim="$HOME/usr/opt/nvim"
-alias oo="nvr --remote-silent"
-alias oo1="vv"
-alias oo2="nvr --servername /tmp/nvim-vv2 --remote-silent"
-alias oo3="nvr --servername /tmp/nvim-vv3 --remote-silent"
+alias oo="nvr --servername /tmp/nvim-oo1 --remote-silent"
+alias oo1="oo"
+alias oo2="nvr --servername /tmp/nvim-oo2 --remote-silent"
+alias oo3="nvr --servername /tmp/nvim-oo3 --remote-silent"
 alias ll="ls -al"
 
 # Set editor - Ranger file manager reads it.
@@ -144,7 +145,7 @@ export VIEWER='$HOME/usr/opt/nvim -m'
 export PATH="$HOME/usr/opt:$PATH"
 
 # Set python path
-export PYTHONPATH="$HOME/git/ompy:$HOME/sync/doc/cs231n/cs231n-solutions/assignment1"
+export PYTHONPATH="$HOME/git/ompy"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
