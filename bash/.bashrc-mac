@@ -8,13 +8,12 @@ alias gim="git commit -m"
 alias rr="ranger"
 
 # VIM shortcuts
-alias vim="nvim"
+alias nv="nvim"
 alias oo="nvr --remote-silent"
 alias oo1="vv"
 alias oo2="nvr --servername /tmp/nvim-vv2 --remote-silent"
 alias oo3="nvr --servername /tmp/nvim-vv3 --remote-silent"
 alias ll="ls -al"
-alias stf="source activate tensorflow"
 
 # Set editor - Ranger file manager reads it.
 export EDITOR=nvim
@@ -26,21 +25,11 @@ export PATH=/usr/local/bin:$PATH
 # Show full path at prompt
 export PS1='\u@\H:\w$ '
 
-# added by Anaconda3 4.2.0 installer
-export PATH="/Users/oliver/anaconda/bin:$PATH"
-
-# Using custom-build OpenCV
-export OpenCV_DIR="/Users/oliver/usr/local"
-# Set python path
-export PYTHONPATH="$HOME/git/ompy:$HOME/sync/doc/cs231n/cs231n-solutions/assignment1"
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 # To stop ranger from loading both the default and your custom rc.conf,
 # set the following variable RANGER_LOAD_DEFAULT_RC to FALSE.
 # See also 'ranger --help'
 RANGER_LOAD_DEFAULT_RC=TRUE 
 
 #Do this if on macOS to avoid `ValueError: unknown locale: UTF-8`
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+#export LC_ALL=en_US.UTF-8
+#export LANG=en_US.UTF-8
