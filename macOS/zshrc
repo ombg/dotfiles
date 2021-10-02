@@ -127,10 +127,14 @@ alias oo1="vv"
 alias oo2="nvr --servername /tmp/nvim-vv2 --remote-silent"
 alias oo3="nvr --servername /tmp/nvim-vv3 --remote-silent"
 alias ll="ls -al"
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC -I rc'
 
 # Set editor - Ranger file manager reads it.
 export EDITOR=nvim
 export VIEWER='nvim -m'
+
+# Add openvon to PATH
+export PATH=$(brew --prefix openvpn)/sbin:$PATH
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source ~/powerlevel10k/powerlevel10k.zsh-theme
