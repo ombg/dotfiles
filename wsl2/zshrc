@@ -93,13 +93,13 @@ source $ZSH/oh-my-zsh.sh
 # export ARCHFLAGS="-arch x86_64"
 
 # WSL specific variables
-export WINUSER=`powershell.exe '$env:UserName'`
+TMPWINUSER=`powershell.exe '$env:UserName'` # Hack
+export WINUSER="${TMPWINUSER: : -1}"
 export WINHOME="/mnt/c/Users/${WINUSER}"
-#export WINHOME="/mnt/c/Users/${WINUSER::-1}"
 
 # Aliases
 alias ll="ls -al"
-alias cdw="cd $WINHOME"
+alias cdw="cd /mnt/c/Users/${WINUSER}"
 alias nv="nvim"
 
 # GIT shortcuts
