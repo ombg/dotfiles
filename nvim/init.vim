@@ -6,34 +6,6 @@ let g:mapleader = "\<Space>"
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Dark powered asynchronous completion framework for neovim
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" {{{
-    " Let deoplete find the default python environment.
-    " E.g., set it to Tensorflow virtual env, when using TF.
-    let g:python_host_prog =  '/usr/bin/python'
-    let g:python3_host_prog = '/home/oliver/.local/share/virtualenvs/nvim-9vUTIy8K/bin/python'
-    " Activate deoplete by default
-    let g:deoplete#enable_at_startup = 1
-" }}}
-
-" deoplete.nvim source for Python
-" Enables auto completion for Python using Jedi.
-Plug 'zchee/deoplete-jedi'
-" {{{
-    let g:deoplete#sources#jedi#server_timeout = 15
-" }}}
-
-" Jedi autocompletion library for VIM
-" However, I use deoplete-jedi for autocompletion. Jedi-vim is just used
-" for code jumps, e.g. function caller to function callee
-Plug 'davidhalter/jedi-vim'
-" {{{
-    "DO NOT use jedi-vim autocompletion, see above and here:
-    " https://github.com/davidhalter/jedi-vim#the-completion-is-too-slow
-    let g:jedi#completions_enabled = 0
-" }}}
-
 " A command-line fuzzy finder written in Go 
 " Both plugins are needed.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -82,87 +54,19 @@ Plug 'junegunn/fzf.vim'
   command! -nargs=+ -complete=dir AgIn call SearchWithAgInDirectory(<f-args>)
 " }}}
 
-" Use GNU GLOBAL gtags
-Plug 'joereynolds/gtags-scope'
-" {{{
-  "Search both cscopes database and the tags file
-  set cscopetag
-  " Cscope settings (Not sure if it really needs the vim plugin for this.)
-  " This function creates a list of al references of the word under the cursor.
-  function! Csc()
-    cscope find c <cword>
-    copen
-  endfunction
-  " Map a shortcut to use it.
-  command! Csc call Csc()
-" }}}
-
-" A light and configurable statusline/tabline plugin for Vim
-Plug 'itchyny/lightline.vim'
-
-" pairs of handy bracket mappings
-Plug 'tpope/vim-unimpaired'
-
-" Latex plugin
-Plug 'lervag/vimtex'
-" {{{
-" vimtex_view_* defines the used PDF viewer and enables forward search
-    let g:vimtex_compiler_progname = 'nvr'
-    if has("unix")
-        let s:uname = system("uname -s")
-        if s:uname == "Darwin\n"
-            "If you are on macOS do this
-            let g:vimtex_view_general_viewer
-                  \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-            let g:vimtex_view_general_options = '-r @line @pdf @tex'
-            let g:vimtex_view_automatic = 1
-      
-            " This adds a callback hook that updates Skim after compilation
-            let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
-            function! UpdateSkim(status)
-                if !a:status | return | endif
-           
-                let l:out = b:vimtex.out()
-                let l:tex = expand('%:p')
-                let l:cmd = [g:vimtex_view_general_viewer, '-r']
-                if !empty(system('pgrep Skim'))
-                    call extend(l:cmd, ['-g'])
-                endif
-                if has('nvim')
-                    call jobstart(l:cmd + [line('.'), l:out, l:tex])
-                elseif has('job')
-                    call job_start(l:cmd + [line('.'), l:out, l:tex])
-                else
-                    call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-                endif
-            endfunction
-        else
-            "If you are on Linux do this
-            let g:vimtex_view_general_viewer = 'okular'
-            let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-            let g:vimtex_view_general_options_latexmk = '--unique'
-        endif
-    endif
-" }}}
-
-" latex live preview - plugin for neovim and vim 8
-Plug 'donRaphaco/neotex', { 'for': 'tex' }
-" {{{
-    let g:neotex_enabled=2              " 0 = always disabled, 1 = default off, 2 = default on
-    let g:neotex_latexdiff=1            " enable latexdiff
-" }}}
-
 " All of your Plugins must be added before the following line which does:
 " Initialize plugin system
 call plug#end()
 
+"
 " Put your non-Plugin stuff after this line
-set number	  "show line numbers
+
+set number "show line numbers
 filetype plugin indent on "Detect filetype
 syntax on "Syntax highlighting
 set nowrap "Soft wrap of lines.
-" Enable scrolling
-set mouse=a
+set mouse=a "Enable scrolling
+
 set encoding=utf-8
 
 "
@@ -178,7 +82,7 @@ set encoding=utf-8
 nnoremap fv :ls<cr>:b
 " Go to previous buffer
 nnoremap ff :b#<cr>
-"
+
 "Indentation
 "
 set tabstop=4     "show exisiting tabs with 2 spaces width
@@ -193,25 +97,6 @@ map tp :tabp<CR>
 map ts :tab split<CR>
 
 "Misc mappings
-" TODO: explanation
-nnoremap <leader>p import pdb; pdb.set_trace()<Esc>
 " Change to directory of current file.
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
-
-"set clipboard=exclude:.*        "Only if vim is slow on startup. Do not connect to X11. Same as vim -X.
-
-" 
-" Latex config which does not belong to Latex plugins 
-"
-" Needed for several Latex plugins
-let g:tex_flavor = 'latex'
-
-" Vim handles the following file types as latex files as well.
-augroup set_latex_filetypes
-    autocmd!
-    autocmd BufRead,BufNewFile *.pgf     set filetype=tex
-    autocmd BufRead,BufNewFile *.tikz    set filetype=tex
-    autocmd BufRead,BufNewFile *.pdf_tex set filetype=tex
-augroup END
-
 
