@@ -54,6 +54,9 @@ Plug 'junegunn/fzf.vim'
   command! -nargs=+ -complete=dir AgIn call SearchWithAgInDirectory(<f-args>)
 " }}}
 
+" Go language support
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 " All of your Plugins must be added before the following line which does:
 " Initialize plugin system
 call plug#end()
