@@ -97,10 +97,12 @@ TMPWINUSER=`powershell.exe '$env:UserName'` # Hack
 export WINUSER="${TMPWINUSER: : -1}"
 export WINHOME="/mnt/c/Users/${WINUSER}"
 
+NEOVIM="${HOME}/usr/local/bin/squashfs-root/usr/bin/nvim"
+
 # Aliases
 alias ll="ls -al"
 alias cdw="cd /mnt/c/Users/${WINUSER}"
-alias nv="nvim"
+alias nv=${NEOVIM}
 
 # GIT shortcuts
 alias gis="git status"
@@ -110,6 +112,9 @@ alias gim="git commit -m"
 # Ranger file manager
 alias rr="ranger"
 
+#Go
+export PATH=${PATH}:${HOME}/go/bin
+
 # VIM shortcuts
 #alias nv="nvim"
 #alias oo="nvr --remote-silent"
@@ -118,8 +123,8 @@ alias rr="ranger"
 #alias oo3="nvr --servername /tmp/nvim-vv3 --remote-silent"
 
 # Set editor - Ranger file manager reads it.
-export EDITOR=nvim
-export VIEWER='nvim -m'
+export EDITOR=${NEOVIM}
+export VIEWER='view'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
