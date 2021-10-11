@@ -56,7 +56,12 @@ Plug 'junegunn/fzf.vim'
 
 " Go language support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lockfile' }
+" {{{
+  " disable vim-go's :GoDef shortcut 
+  " this is handled by LanguageClient (coc.nvim)
+  let g:go_def_mapping_enabled = 0
+" }}}
+Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': 'yarn install --frozen-lockfile' }
 
 " All of your Plugins must be added before the following line which does:
 " Initialize plugin system
@@ -70,8 +75,6 @@ filetype plugin indent on "Detect filetype
 syntax on "Syntax highlighting
 set nowrap "Soft wrap of lines.
 set mouse=a "Enable scrolling
-
-set encoding=utf-8
 
 "
 "My color scheme and font size
@@ -107,7 +110,7 @@ map ts :tab split<CR>
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 "
-" coc.nvim configuration (required)
+" coc.nvim configuration (required)  === S T A R T ===
 "
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
@@ -116,7 +119,7 @@ set encoding=utf-8
 " TextEdit might fail if hidden is not set.
 set hidden
 
-" Some servers have issues with backup files, see #649.
+" Some servers have issues with backup files, see https://github.com/neoclide/coc.nvim/issues/649
 set nobackup
 set nowritebackup
 
@@ -275,3 +278,6 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+"
+" coc.nvim configuration (required)  === S T O P ===
+"
