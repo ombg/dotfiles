@@ -63,6 +63,15 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " }}}
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': 'yarn install --frozen-lockfile' }
 
+" Lean & mean status/tabline
+Plug 'vim-airline/vim-airline'
+
+" Solarized color scheme
+Plug 'lifepillar/vim-solarized8'
+
+" Adds icons to plugins (call after vim-airline)
+Plug 'ryanoasis/vim-devicons'
+
 " All of your Plugins must be added before the following line which does:
 " Initialize plugin system
 call plug#end()
@@ -80,9 +89,8 @@ set mouse=a "Enable scrolling
 "My color scheme and font size
 "
 "set t_Co=256      "Colors?
-"colorscheme carbonized
-"set background=dark
-"set guifont=Source\ Code\ Pro\ Semibold:h15
+set background=dark "Needs solarized plugin above
+autocmd vimenter * ++nested colorscheme solarized8 "Needs solarized plugin above
 
 " Operations on buffers
 " Shows all exisiting buffers and prompts user to enter buf number.
@@ -114,6 +122,7 @@ nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 "
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
+" Actually it is needed by vim-devicons plugin
 set encoding=utf-8
 
 " TextEdit might fail if hidden is not set.
