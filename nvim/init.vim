@@ -60,6 +60,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   " disable vim-go's :GoDef shortcut 
   " this is handled by LanguageClient (coc.nvim)
   let g:go_def_mapping_enabled = 0
+  au FileType go nmap <leader>r <Plug>(go-run)
 " }}}
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': 'yarn install --frozen-lockfile' }
 
